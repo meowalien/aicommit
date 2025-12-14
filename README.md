@@ -1,83 +1,134 @@
 # aicommit
 
-AI-powered git commit message generator using OpenAI or Anthropic APIs.
+使用 AI 自動生成 Git commit message 的 CLI 工具。支援 OpenAI 和 Anthropic API。
 
-## Features
+## 功能特色
 
-- Automatically generates [Conventional Commits](https://www.conventionalcommits.org/) formatted commit messages
-- Supports both OpenAI and Anthropic AI providers
-- Simple CLI interface
-- Secure configuration storage
+- 自動生成 [Conventional Commits](https://www.conventionalcommits.org/) 格式的 commit message
+- 支援 OpenAI 和 Anthropic 兩種 AI 提供者
+- 簡單的命令列介面
+- 安全的設定檔儲存
 
-## Installation
+## Installation 安裝
+
+### 前置需求
+
+- Go 1.21 或更高版本
+- Git
+
+### 一鍵安裝（推薦）
+
+複製以下指令到終端機執行，即可完成安裝並自動設定 PATH：
 
 ```bash
-# Clone and build
-git clone https://github.com/jacky_li/aicommit.git
-cd aicommit
-go build -o aicommit ./cmd/aicommit/
-
-# Move to PATH (optional)
-sudo mv aicommit /usr/local/bin/
+git clone https://github.com/jacky_li/aicommit.git /tmp/aicommit && \
+cd /tmp/aicommit && \
+go install ./cmd/aicommit/ && \
+grep -q 'export PATH="$PATH:$HOME/go/bin"' ~/.zshrc || echo 'export PATH="$PATH:$HOME/go/bin"' >> ~/.zshrc && \
+source ~/.zshrc && \
+rm -rf /tmp/aicommit && \
+echo "✅ 安裝完成！" && \
+aicommit --help
 ```
 
-## Configuration
-
-Set your API keys and choose a provider:
+### 手動安裝
 
 ```bash
-# Using Anthropic (default)
-aicommit set anthropic_key=sk-ant-xxxxx
+# 1. Clone 專案
+git clone https://github.com/jacky_li/aicommit.git
+cd aicommit
+
+# 2. 安裝到 GOPATH/bin
+go install ./cmd/aicommit/
+
+# 3. 設定 PATH（加入 ~/.zshrc）
+echo 'export PATH="$PATH:$HOME/go/bin"' >> ~/.zshrc
+source ~/.zshrc
+
+# 4. 驗證安裝
+aicommit --help
+```
+
+## 設定 API Key
+
+在使用之前，需要先設定 AI 提供者的 API Key：
+
+### 使用 Anthropic（預設）
+
+```bash
+aicommit set anthropic_key=你的_ANTHROPIC_API_KEY
 aicommit set provider=anthropic
+```
 
-# Using OpenAI
-aicommit set openai_key=sk-xxxxx
+### 使用 OpenAI
+
+```bash
+aicommit set openai_key=你的_OPENAI_API_KEY
 aicommit set provider=openai
+```
 
-# Optional: specify a different model
+### 可選：指定模型
+
+```bash
+# Anthropic 模型
 aicommit set anthropic_model=claude-sonnet-4-20250514
+
+# OpenAI 模型
 aicommit set openai_model=gpt-4o
 ```
 
-Configuration is stored in `~/.aicommit/config.yaml`.
+設定檔儲存於 `~/.aicommit/config.yaml`
 
-## Usage
+## 使用方式
+
+### 基本用法
 
 ```bash
-# Stage your changes
+# 1. 先 stage 你的修改
 git add .
 
-# Generate commit message and commit
+# 2. 執行 aicommit 自動生成 commit message 並 commit
 aicommit
+```
 
-# Preview generated message without committing
+### 進階選項
+
+```bash
+# 預覽模式：只顯示生成的 message，不執行 commit
 aicommit --dry-run
+aicommit -d
 
-# Verbose output
+# 詳細輸出模式
 aicommit --verbose
+aicommit -v
+
+# 顯示說明
+aicommit --help
 ```
 
-## Available Commands
+## 指令說明
 
-```
-aicommit              Generate commit message and commit staged changes
-aicommit set KEY=VAL  Configure API keys and settings
-aicommit --help       Show help
-```
+| 指令 | 說明 |
+|------|------|
+| `aicommit` | 自動生成 commit message 並 commit |
+| `aicommit set KEY=VALUE` | 設定 API key 或其他選項 |
+| `aicommit --dry-run` | 預覽模式，不執行 commit |
+| `aicommit --verbose` | 詳細輸出模式 |
+| `aicommit --help` | 顯示說明 |
 
-## Configuration Keys
+## 設定選項
 
-| Key | Description | Default |
-|-----|-------------|---------|
-| `provider` | AI provider (`openai` or `anthropic`) | `anthropic` |
-| `anthropic_key` | Anthropic API key | - |
-| `anthropic_model` | Anthropic model | `claude-sonnet-4-20250514` |
-| `openai_key` | OpenAI API key | - |
-| `openai_model` | OpenAI model | `gpt-4o` |
+| Key | 說明 | 預設值 |
+|-----|------|--------|
+| `provider` | AI 提供者 (`openai` 或 `anthropic`) | `anthropic` |
+| `anthropic_key` | Anthropic API Key | - |
+| `anthropic_model` | Anthropic 模型 | `claude-sonnet-4-20250514` |
+| `openai_key` | OpenAI API Key | - |
+| `openai_model` | OpenAI 模型 | `gpt-4o` |
 
-## Example Output
+## 使用範例
 
-```
+```bash
 $ git add .
 $ aicommit
 Generating commit message using anthropic...
@@ -86,6 +137,70 @@ Generated commit message:
 feat(auth): add user login validation
 
 Commit successful!
+```
+
+```bash
+$ aicommit --dry-run
+Generating commit message using anthropic...
+
+Generated commit message:
+fix(api): resolve null pointer exception in user service
+
+(dry-run mode - not committing)
+```
+
+## 生成的 Commit Message 格式
+
+工具會自動生成符合 [Conventional Commits](https://www.conventionalcommits.org/) 規範的 commit message：
+
+- `feat`: 新功能
+- `fix`: 修復 bug
+- `docs`: 文件修改
+- `style`: 程式碼格式修改（不影響功能）
+- `refactor`: 重構
+- `perf`: 效能優化
+- `test`: 測試相關
+- `build`: 建置系統或外部依賴修改
+- `ci`: CI 設定修改
+- `chore`: 其他雜項修改
+
+## 故障排除
+
+### 找不到 aicommit 指令
+
+確保 `$HOME/go/bin` 在你的 PATH 中：
+
+```bash
+echo 'export PATH="$PATH:$HOME/go/bin"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+### API Key 錯誤
+
+確認你的 API Key 設定正確：
+
+```bash
+cat ~/.aicommit/config.yaml
+```
+
+### 沒有 staged 的檔案
+
+在執行 `aicommit` 之前，需要先 stage 檔案：
+
+```bash
+git add .
+# 或
+git add <specific-files>
+```
+
+## 解除安裝
+
+```bash
+# 刪除執行檔
+rm $(which aicommit)
+
+# 刪除設定檔
+rm -rf ~/.aicommit
 ```
 
 ## License

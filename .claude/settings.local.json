@@ -21,7 +21,10 @@
       "Bash(/Users/jacky_li/go/bin/aicommit:*)",
       "Bash(sudo ln:*)",
       "Bash(export PATH=\"$PATH:/Users/jacky_li/go/bin\")",
-      "Bash(aicommit set --help:*)"
+      "Bash(aicommit set --help:*)",
+      "Bash(aicommit --dry-run:*)",
+      "Bash(aicommit)",
+      "Bash(chmod:*)"
     ]
   }
 }
