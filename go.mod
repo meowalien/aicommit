@@ -1,4 +1,4 @@
-module github.com/jacky_li/aicommit
+module github.com/meowalien/aicommit
 
 go 1.25.1
 

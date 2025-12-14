@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/jacky_li/aicommit/internal/cli"
+	"github.com/meowalien/aicommit/internal/cli"
 )
 
 func main() {

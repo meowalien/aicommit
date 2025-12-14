@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jacky_li/aicommit/internal/config"
+	"github.com/meowalien/aicommit/internal/config"
 )
 
 var setCmd = &cobra.Command{

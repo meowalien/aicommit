@@ -18,7 +18,7 @@
 
 **macOS (Apple Silicon M1/M2/M3):**
 ```bash
-curl -sSL https://github.com/jacky_li/aicommit/releases/latest/download/aicommit-darwin-arm64 -o /usr/local/bin/aicommit && \
+curl -sSL https://github.com/meowalien/aicommit/releases/latest/download/aicommit-darwin-arm64 -o /usr/local/bin/aicommit && \
 chmod +x /usr/local/bin/aicommit && \
 echo "✅ 安裝完成！" && \
 aicommit --help
@@ -26,7 +26,7 @@ aicommit --help
 
 **macOS (Intel):**
 ```bash
-curl -sSL https://github.com/jacky_li/aicommit/releases/latest/download/aicommit-darwin-amd64 -o /usr/local/bin/aicommit && \
+curl -sSL https://github.com/meowalien/aicommit/releases/latest/download/aicommit-darwin-amd64 -o /usr/local/bin/aicommit && \
 chmod +x /usr/local/bin/aicommit && \
 echo "✅ 安裝完成！" && \
 aicommit --help
@@ -34,7 +34,7 @@ aicommit --help
 
 **Linux (x86_64):**
 ```bash
-curl -sSL https://github.com/jacky_li/aicommit/releases/latest/download/aicommit-linux-amd64 -o /usr/local/bin/aicommit && \
+curl -sSL https://github.com/meowalien/aicommit/releases/latest/download/aicommit-linux-amd64 -o /usr/local/bin/aicommit && \
 chmod +x /usr/local/bin/aicommit && \
 echo "✅ 安裝完成！" && \
 aicommit --help
@@ -42,7 +42,7 @@ aicommit --help
 
 **Linux (ARM64):**
 ```bash
-curl -sSL https://github.com/jacky_li/aicommit/releases/latest/download/aicommit-linux-arm64 -o /usr/local/bin/aicommit && \
+curl -sSL https://github.com/meowalien/aicommit/releases/latest/download/aicommit-linux-arm64 -o /usr/local/bin/aicommit && \
 chmod +x /usr/local/bin/aicommit && \
 echo "✅ 安裝完成！" && \
 aicommit --help
@@ -52,7 +52,7 @@ aicommit --help
 
 ### 手動下載安裝
 
-1. 前往 [Releases](https://github.com/jacky_li/aicommit/releases) 頁面
+1. 前往 [Releases](https://github.com/meowalien/aicommit/releases) 頁面
 2. 下載對應你系統的執行檔：
    - `aicommit-darwin-arm64` - macOS Apple Silicon
    - `aicommit-darwin-amd64` - macOS Intel
@@ -67,7 +67,7 @@ aicommit --help
 
 ```bash
 # 1. Clone 專案
-git clone https://github.com/jacky_li/aicommit.git
+git clone https://github.com/meowalien/aicommit.git
 cd aicommit
 
 # 2. 編譯並安裝到 GOPATH/bin

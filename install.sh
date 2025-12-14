@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # aicommit 一鍵安裝腳本
-# 使用方式: curl -sSL https://raw.githubusercontent.com/jacky_li/aicommit/main/install.sh | bash
+# 使用方式: curl -sSL https://raw.githubusercontent.com/meowalien/aicommit/main/install.sh | bash
 
 set -e
 
@@ -38,7 +38,7 @@ case "$ARCH" in
 esac
 
 BINARY_NAME="aicommit-${OS}-${ARCH}"
-DOWNLOAD_URL="https://github.com/jacky_li/aicommit/releases/latest/download/${BINARY_NAME}"
+DOWNLOAD_URL="https://github.com/meowalien/aicommit/releases/latest/download/${BINARY_NAME}"
 INSTALL_DIR="/usr/local/bin"
 INSTALL_PATH="${INSTALL_DIR}/aicommit"
 

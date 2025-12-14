@@ -7,9 +7,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jacky_li/aicommit/internal/ai"
-	"github.com/jacky_li/aicommit/internal/config"
-	"github.com/jacky_li/aicommit/internal/git"
+	"github.com/meowalien/aicommit/internal/ai"
+	"github.com/meowalien/aicommit/internal/config"
+	"github.com/meowalien/aicommit/internal/git"
 )
 
 var (

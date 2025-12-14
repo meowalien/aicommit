@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/jacky_li/aicommit/internal/config"
+	"github.com/meowalien/aicommit/internal/config"
 )
 
 type Provider interface {
