@@ -6,6 +6,7 @@
 
 - 自動生成 [Conventional Commits](https://www.conventionalcommits.org/) 格式的 commit message
 - 支援 OpenAI 和 Anthropic 兩種 AI 提供者
+- 支援多國語言 commit message（中文、日文、韓文等）
 - 簡單的命令列介面
 - 安全的設定檔儲存
 
@@ -77,6 +78,33 @@ aicommit set anthropic_model=claude-sonnet-4-20250514
 aicommit set openai_model=gpt-4o
 ```
 
+### 設定 Commit Message 語言
+
+預設為英文 (`en`)，可設定為其他語言：
+
+```bash
+# 繁體中文
+aicommit set language=zh-TW
+
+# 簡體中文
+aicommit set language=zh-CN
+
+# 日文
+aicommit set language=ja
+
+# 韓文
+aicommit set language=ko
+
+# 英文（預設）
+aicommit set language=en
+```
+
+也可以使用簡寫 `lang`：
+
+```bash
+aicommit set lang=zh-TW
+```
+
 設定檔儲存於 `~/.aicommit/config.yaml`
 
 ## 使用方式
@@ -121,6 +149,7 @@ aicommit --help
 | Key | 說明 | 預設值 |
 |-----|------|--------|
 | `provider` | AI 提供者 (`openai` 或 `anthropic`) | `anthropic` |
+| `language` / `lang` | Commit message 語言 | `en` |
 | `anthropic_key` | Anthropic API Key | - |
 | `anthropic_model` | Anthropic 模型 | `claude-sonnet-4-20250514` |
 | `openai_key` | OpenAI API Key | - |
@@ -145,6 +174,19 @@ Generating commit message using anthropic...
 
 Generated commit message:
 fix(api): resolve null pointer exception in user service
+
+(dry-run mode - not committing)
+```
+
+### 中文 Commit Message 範例
+
+```bash
+$ aicommit set language=zh-TW
+$ aicommit --dry-run
+Generating commit message using anthropic...
+
+Generated commit message:
+feat(auth): 新增使用者登入驗證功能
 
 (dry-run mode - not committing)
 ```

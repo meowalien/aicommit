@@ -10,11 +10,12 @@ import (
 )
 
 type AnthropicProvider struct {
-	client anthropic.Client
-	model  string
+	client   anthropic.Client
+	model    string
+	language string
 }
 
-func NewAnthropicProvider(apiKey, model string) (*AnthropicProvider, error) {
+func NewAnthropicProvider(apiKey, model, language string) (*AnthropicProvider, error) {
 	if apiKey == "" {
 		return nil, fmt.Errorf("Anthropic API key not configured")
 	}
@@ -22,8 +23,9 @@ func NewAnthropicProvider(apiKey, model string) (*AnthropicProvider, error) {
 		model = "claude-sonnet-4-20250514"
 	}
 	return &AnthropicProvider{
-		client: anthropic.NewClient(option.WithAPIKey(apiKey)),
-		model:  model,
+		client:   anthropic.NewClient(option.WithAPIKey(apiKey)),
+		model:    model,
+		language: language,
 	}, nil
 }
 
@@ -36,7 +38,7 @@ func (p *AnthropicProvider) GenerateCommitMessage(ctx context.Context, diff stri
 		Model:     anthropic.Model(p.model),
 		MaxTokens: 500,
 		System: []anthropic.TextBlockParam{
-			{Text: SystemPrompt},
+			{Text: BuildSystemPrompt(p.language)},
 		},
 		Messages: []anthropic.MessageParam{
 			{

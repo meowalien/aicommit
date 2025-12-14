@@ -20,6 +20,7 @@ type OpenAIConfig struct {
 
 type Config struct {
 	Provider  string          `mapstructure:"provider"`
+	Language  string          `mapstructure:"language"`
 	Anthropic AnthropicConfig `mapstructure:"anthropic"`
 	OpenAI    OpenAIConfig    `mapstructure:"openai"`
 }
@@ -43,6 +44,7 @@ func getConfigPath() (string, error) {
 func Default() *Config {
 	return &Config{
 		Provider: "anthropic",
+		Language: "en",
 		Anthropic: AnthropicConfig{
 			Model: "claude-sonnet-4-20250514",
 		},
@@ -64,6 +66,7 @@ func Load() (*Config, error) {
 
 	// Set defaults
 	viper.SetDefault("provider", "anthropic")
+	viper.SetDefault("language", "en")
 	viper.SetDefault("anthropic.model", "claude-sonnet-4-20250514")
 	viper.SetDefault("openai.model", "gpt-4o")
 
@@ -100,6 +103,7 @@ func (c *Config) Save() error {
 	}
 
 	viper.Set("provider", c.Provider)
+	viper.Set("language", c.Language)
 	viper.Set("anthropic.api_key", c.Anthropic.APIKey)
 	viper.Set("anthropic.model", c.Anthropic.Model)
 	viper.Set("openai.api_key", c.OpenAI.APIKey)
@@ -124,6 +128,8 @@ func (c *Config) Set(key, value string) error {
 			return fmt.Errorf("invalid provider: %s (must be 'openai' or 'anthropic')", value)
 		}
 		c.Provider = value
+	case "language", "lang":
+		c.Language = value
 	case "anthropic_key":
 		c.Anthropic.APIKey = value
 	case "anthropic_model":

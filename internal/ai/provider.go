@@ -15,9 +15,9 @@ type Provider interface {
 func NewProvider(cfg *config.Config) (Provider, error) {
 	switch cfg.Provider {
 	case "openai":
-		return NewOpenAIProvider(cfg.OpenAI.APIKey, cfg.OpenAI.Model)
+		return NewOpenAIProvider(cfg.OpenAI.APIKey, cfg.OpenAI.Model, cfg.Language)
 	case "anthropic":
-		return NewAnthropicProvider(cfg.Anthropic.APIKey, cfg.Anthropic.Model)
+		return NewAnthropicProvider(cfg.Anthropic.APIKey, cfg.Anthropic.Model, cfg.Language)
 	default:
 		return nil, fmt.Errorf("unknown provider: %s", cfg.Provider)
 	}

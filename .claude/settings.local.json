@@ -24,7 +24,8 @@
       "Bash(aicommit set --help:*)",
       "Bash(aicommit --dry-run:*)",
       "Bash(aicommit)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(cat:*)"
     ]
   }
 }

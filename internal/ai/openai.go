@@ -9,11 +9,12 @@ import (
 )
 
 type OpenAIProvider struct {
-	client *openai.Client
-	model  string
+	client   *openai.Client
+	model    string
+	language string
 }
 
-func NewOpenAIProvider(apiKey, model string) (*OpenAIProvider, error) {
+func NewOpenAIProvider(apiKey, model, language string) (*OpenAIProvider, error) {
 	if apiKey == "" {
 		return nil, fmt.Errorf("OpenAI API key not configured")
 	}
@@ -21,8 +22,9 @@ func NewOpenAIProvider(apiKey, model string) (*OpenAIProvider, error) {
 		model = "gpt-4o"
 	}
 	return &OpenAIProvider{
-		client: openai.NewClient(apiKey),
-		model:  model,
+		client:   openai.NewClient(apiKey),
+		model:    model,
+		language: language,
 	}, nil
 }
 
@@ -34,7 +36,7 @@ func (p *OpenAIProvider) GenerateCommitMessage(ctx context.Context, diff string)
 	resp, err := p.client.CreateChatCompletion(ctx, openai.ChatCompletionRequest{
 		Model: p.model,
 		Messages: []openai.ChatCompletionMessage{
-			{Role: openai.ChatMessageRoleSystem, Content: SystemPrompt},
+			{Role: openai.ChatMessageRoleSystem, Content: BuildSystemPrompt(p.language)},
 			{Role: openai.ChatMessageRoleUser, Content: BuildUserPrompt(diff)},
 		},
 		MaxTokens:   500,

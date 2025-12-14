@@ -2,7 +2,7 @@ package ai
 
 import "fmt"
 
-const SystemPrompt = `You are an expert at writing git commit messages following the Conventional Commits specification.
+const baseSystemPrompt = `You are an expert at writing git commit messages following the Conventional Commits specification.
 
 Given a git diff, generate a concise and descriptive commit message.
 
@@ -15,6 +15,16 @@ Rules:
 6. If the changes are complex, add a blank line followed by a more detailed body explaining what and why
 
 Respond with ONLY the commit message, no explanations, no markdown formatting, no quotes around the message.`
+
+func BuildSystemPrompt(language string) string {
+	if language == "" || language == "en" {
+		return baseSystemPrompt
+	}
+
+	return fmt.Sprintf(`%s
+
+IMPORTANT: Write the commit message in %s language. The type (feat, fix, etc.) should remain in English, but the description and body should be written in %s.`, baseSystemPrompt, language, language)
+}
 
 func BuildUserPrompt(diff string) string {
 	// Truncate diff if too long to avoid token limits

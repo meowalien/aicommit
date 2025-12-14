@@ -16,6 +16,7 @@ var setCmd = &cobra.Command{
 
 Available keys:
   provider          - AI provider to use (openai or anthropic)
+  language (lang)   - Commit message language (e.g., en, zh-TW, zh-CN, ja, ko)
   anthropic_key     - Anthropic API key
   anthropic_model   - Anthropic model name (default: claude-sonnet-4-20250514)
   openai_key        - OpenAI API key
@@ -23,6 +24,8 @@ Available keys:
 
 Examples:
   aicommit set provider=anthropic
+  aicommit set language=zh-TW
+  aicommit set lang=en
   aicommit set anthropic_key=sk-ant-xxx anthropic_model=claude-sonnet-4-20250514
   aicommit set openai_key=sk-xxx openai_model=gpt-4o`,
 	RunE: runSet,
