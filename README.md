@@ -12,38 +12,69 @@
 
 ## Installation 安裝
 
-### 前置需求
-
-- Go 1.21 或更高版本
-- Git
-
 ### 一鍵安裝（推薦）
 
-複製以下指令到終端機執行，即可完成安裝並自動設定 PATH：
+複製以下指令到終端機執行，自動下載預編譯的執行檔並安裝：
 
+**macOS (Apple Silicon M1/M2/M3):**
 ```bash
-git clone https://github.com/jacky_li/aicommit.git /tmp/aicommit && \
-cd /tmp/aicommit && \
-go install ./cmd/aicommit/ && \
-grep -q 'export PATH="$PATH:$HOME/go/bin"' ~/.zshrc || echo 'export PATH="$PATH:$HOME/go/bin"' >> ~/.zshrc && \
-source ~/.zshrc && \
-rm -rf /tmp/aicommit && \
+curl -sSL https://github.com/jacky_li/aicommit/releases/latest/download/aicommit-darwin-arm64 -o /usr/local/bin/aicommit && \
+chmod +x /usr/local/bin/aicommit && \
 echo "✅ 安裝完成！" && \
 aicommit --help
 ```
 
-### 手動安裝
+**macOS (Intel):**
+```bash
+curl -sSL https://github.com/jacky_li/aicommit/releases/latest/download/aicommit-darwin-amd64 -o /usr/local/bin/aicommit && \
+chmod +x /usr/local/bin/aicommit && \
+echo "✅ 安裝完成！" && \
+aicommit --help
+```
+
+**Linux (x86_64):**
+```bash
+curl -sSL https://github.com/jacky_li/aicommit/releases/latest/download/aicommit-linux-amd64 -o /usr/local/bin/aicommit && \
+chmod +x /usr/local/bin/aicommit && \
+echo "✅ 安裝完成！" && \
+aicommit --help
+```
+
+**Linux (ARM64):**
+```bash
+curl -sSL https://github.com/jacky_li/aicommit/releases/latest/download/aicommit-linux-arm64 -o /usr/local/bin/aicommit && \
+chmod +x /usr/local/bin/aicommit && \
+echo "✅ 安裝完成！" && \
+aicommit --help
+```
+
+> 如果 `/usr/local/bin` 需要權限，請在指令前加上 `sudo`
+
+### 手動下載安裝
+
+1. 前往 [Releases](https://github.com/jacky_li/aicommit/releases) 頁面
+2. 下載對應你系統的執行檔：
+   - `aicommit-darwin-arm64` - macOS Apple Silicon
+   - `aicommit-darwin-amd64` - macOS Intel
+   - `aicommit-linux-amd64` - Linux x86_64
+   - `aicommit-linux-arm64` - Linux ARM64
+3. 重新命名為 `aicommit` 並移動到 PATH 目錄中
+4. 賦予執行權限：`chmod +x aicommit`
+
+### 從原始碼編譯安裝
+
+如果你想從原始碼編譯，需要先安裝 Go 1.21 或更高版本。
 
 ```bash
 # 1. Clone 專案
 git clone https://github.com/jacky_li/aicommit.git
 cd aicommit
 
-# 2. 安裝到 GOPATH/bin
+# 2. 編譯並安裝到 GOPATH/bin
 go install ./cmd/aicommit/
 
 # 3. 設定 PATH（加入 ~/.zshrc）
-echo 'export PATH="$PATH:$HOME/go/bin"' >> ~/.zshrc
+grep -q 'export PATH="$PATH:$HOME/go/bin"' ~/.zshrc || echo 'export PATH="$PATH:$HOME/go/bin"' >> ~/.zshrc
 source ~/.zshrc
 
 # 4. 驗證安裝

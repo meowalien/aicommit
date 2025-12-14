@@ -7,68 +7,73 @@ set -e
 
 echo "🚀 開始安裝 aicommit..."
 
-# 檢查 Go 是否已安裝
-if ! command -v go &> /dev/null; then
-    echo "❌ 錯誤: 請先安裝 Go (https://golang.org/dl/)"
+# 偵測系統架構
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+ARCH=$(uname -m)
+
+case "$OS" in
+    darwin)
+        OS="darwin"
+        ;;
+    linux)
+        OS="linux"
+        ;;
+    *)
+        echo "❌ 不支援的作業系統: $OS"
+        exit 1
+        ;;
+esac
+
+case "$ARCH" in
+    x86_64|amd64)
+        ARCH="amd64"
+        ;;
+    arm64|aarch64)
+        ARCH="arm64"
+        ;;
+    *)
+        echo "❌ 不支援的系統架構: $ARCH"
+        exit 1
+        ;;
+esac
+
+BINARY_NAME="aicommit-${OS}-${ARCH}"
+DOWNLOAD_URL="https://github.com/jacky_li/aicommit/releases/latest/download/${BINARY_NAME}"
+INSTALL_DIR="/usr/local/bin"
+INSTALL_PATH="${INSTALL_DIR}/aicommit"
+
+echo "📥 下載 ${BINARY_NAME}..."
+echo "   URL: ${DOWNLOAD_URL}"
+
+# 檢查是否需要 sudo
+if [ -w "$INSTALL_DIR" ]; then
+    curl -sSL "$DOWNLOAD_URL" -o "$INSTALL_PATH"
+    chmod +x "$INSTALL_PATH"
+else
+    echo "⚠️  需要管理員權限安裝到 ${INSTALL_DIR}"
+    sudo curl -sSL "$DOWNLOAD_URL" -o "$INSTALL_PATH"
+    sudo chmod +x "$INSTALL_PATH"
+fi
+
+# 驗證安裝
+if command -v aicommit &> /dev/null; then
+    echo ""
+    echo "✅ aicommit 安裝完成！"
+    echo ""
+    echo "📋 下一步："
+    echo "   1. 設定 API Key:"
+    echo "      aicommit set anthropic_key=你的_API_KEY"
+    echo "      aicommit set provider=anthropic"
+    echo ""
+    echo "   或使用 OpenAI:"
+    echo "      aicommit set openai_key=你的_API_KEY"
+    echo "      aicommit set provider=openai"
+    echo ""
+    echo "   2. 設定語言（可選）:"
+    echo "      aicommit set language=zh-TW"
+    echo ""
+    echo "🎉 使用方式: git add . && aicommit"
+else
+    echo "❌ 安裝失敗，請手動下載安裝"
     exit 1
 fi
-
-# 檢查 Git 是否已安裝
-if ! command -v git &> /dev/null; then
-    echo "❌ 錯誤: 請先安裝 Git"
-    exit 1
-fi
-
-# 建立暫存目錄
-TEMP_DIR=$(mktemp -d)
-cd "$TEMP_DIR"
-
-echo "📥 下載 aicommit..."
-git clone --depth 1 https://github.com/jacky_li/aicommit.git .
-
-echo "🔨 編譯安裝..."
-go install ./cmd/aicommit/
-
-# 偵測 shell 設定檔
-SHELL_RC=""
-if [ -n "$ZSH_VERSION" ] || [ "$SHELL" = "/bin/zsh" ]; then
-    SHELL_RC="$HOME/.zshrc"
-elif [ -n "$BASH_VERSION" ] || [ "$SHELL" = "/bin/bash" ]; then
-    if [ -f "$HOME/.bash_profile" ]; then
-        SHELL_RC="$HOME/.bash_profile"
-    else
-        SHELL_RC="$HOME/.bashrc"
-    fi
-fi
-
-# 加入 PATH
-EXPORT_LINE='export PATH="$PATH:$HOME/go/bin"'
-if [ -n "$SHELL_RC" ]; then
-    if ! grep -q "$HOME/go/bin" "$SHELL_RC" 2>/dev/null; then
-        echo "" >> "$SHELL_RC"
-        echo "# Added by aicommit installer" >> "$SHELL_RC"
-        echo "$EXPORT_LINE" >> "$SHELL_RC"
-        echo "📝 已將 PATH 設定加入 $SHELL_RC"
-    else
-        echo "✅ PATH 已設定"
-    fi
-fi
-
-# 清理暫存目錄
-cd /
-rm -rf "$TEMP_DIR"
-
-echo ""
-echo "✅ aicommit 安裝完成！"
-echo ""
-echo "📋 下一步："
-echo "   1. 重新開啟終端機，或執行: source $SHELL_RC"
-echo "   2. 設定 API Key:"
-echo "      aicommit set anthropic_key=你的_API_KEY"
-echo "      aicommit set provider=anthropic"
-echo ""
-echo "   或使用 OpenAI:"
-echo "      aicommit set openai_key=你的_API_KEY"
-echo "      aicommit set provider=openai"
-echo ""
-echo "🎉 使用方式: git add . && aicommit"
