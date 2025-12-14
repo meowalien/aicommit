@@ -15,7 +15,13 @@
       "Bash(go list:*)",
       "Bash(./aicommit:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(go install:*)",
+      "Bash(aicommit --help:*)",
+      "Bash(/Users/jacky_li/go/bin/aicommit:*)",
+      "Bash(sudo ln:*)",
+      "Bash(export PATH=\"$PATH:/Users/jacky_li/go/bin\")",
+      "Bash(aicommit set --help:*)"
     ]
   }
 }
